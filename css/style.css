@@ -3,8 +3,11 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: auto center;
-
 }
+
+
+
+
 
 #login-container{
   background-color: #fff;
@@ -15,7 +18,66 @@ body {
 .center {
   margin: auto;
   width: 20%;
-  border: 3px solid black;
+  border: 2px solid black;
   padding: 10px;
   margin-top: 10em;
+}
+
+.sidenav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+  display: none;
+}
+
+.sidenav h1 {
+  padding: 6px 6px 6px 32px;
+  text-decoration: none;
+  /* font-size: 25px; */
+  color: #818181;
+  display: block;
+}
+
+.sidenav .my-activities {
+  padding: 6px 6px 6px 32px;
+  text-decoration: none;
+  /* font-size: 25px; */
+  color: #818181;
+  display: block;
+}
+
+.sidenav .my-activities :hover {
+  color: #f1f1f1;
+}
+
+
+.sidenav .my-goals {
+  padding: 6px 6px 6px 32px;
+  text-decoration: none;
+  /* font-size: 25px; */
+  color: #818181;
+  display: block;
+}
+
+.sidenav .my-goals :hover {
+  color: #f1f1f1;
+}
+
+
+#open-nav-bar {
+  display: none;
+}
+
+.splash-page{
+  display: block;
+}
+
+#smile{
+  font-size: 125px;
 }
