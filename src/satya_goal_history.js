@@ -11,7 +11,14 @@
 
 
 
-
+  //Goals Event Listener
+   if (e.target.innerText === 'My Goals') {
+     navBar.style.width = "0"
+     fetch(URL)
+     .then(r => r.json())
+     .then(userJson => findUser(userEmail, userJson))
+     .then((user) => renderGoals(user))
+   }//end of goals
 
 
 
