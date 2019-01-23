@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     if (e.target.id === "display-email"){//user show page
       navBar.style.display = "none"
-      contentBody.innerHTML = `<div id="activity-chart"><canvas id="myChart"></canvas></div>`
+      contentBody.innerHTML = `<div id="activity-chart" style="width:55%"><canvas id="myChart"></canvas></div>`
       fetch(URL)
       .then(r => r.json())
       .then(userJson => findUser(userEmail, userJson))
@@ -79,7 +79,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
     const currentGoal = unreachedGoal(user)
-    console.log(currentGoal);
     const allActivities = currentActivities(user, currentGoal.id)
     const workOuts = allActivities.filter( activity => activity.activity_id == 1)
     const meals = allActivities.filter( activity => activity.activity_id == 2)
@@ -98,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         labels: ["Work Outs", "Meals", "Mindfullness", "Remaining Points for Goal"],
         datasets: [{
           backgroundColor: ['rgb(204, 255, 204, 0.9)','rgb(255, 255, 204, 0.9)','rgb(204, 229, 255, 0.9)','rgb(255, 255, 255, 0.9)' ],
-          borderColor: 'rgb(0, 0, 0)',
+          borderColor: 'rgb(192, 192, 192, 0.5)',
           data: [`${workOutpts}`,`${mealpts}`,`${mindfullnesspts}`, `${remainingPts}`],
         }]
       },
