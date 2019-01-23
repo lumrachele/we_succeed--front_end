@@ -73,13 +73,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
   function currentActivities(user, goalId){
     return user.user_activities.filter( ua => ua.goal_id == goalId)
-
   }
 
   function renderUserHomePage(user){
-    const reducer = (accumulator = 0, currentValue) => accumulator + currentValue;
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
     const currentGoal = unreachedGoal(user)
+    console.log(currentGoal);
     const allActivities = currentActivities(user, currentGoal.id)
     const workOuts = allActivities.filter( activity => activity.activity_id == 1)
     const meals = allActivities.filter( activity => activity.activity_id == 2)
@@ -89,31 +89,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const mealpts = meals.map(act => act.points).reduce(reducer, 0)
     const mindfullnesspts = mindfullness.map(act => act.points).reduce(reducer, 0)
 
-    console.log(workOutpts, mealpts, mindfullnesspts)
-
+    const remainingPts = (currentGoal.value - [workOutpts, mealpts, mindfullnesspts].reduce(reducer, 0))
 
     const ctx = document.getElementById('myChart').getContext('2d');
     const chart = new Chart(ctx, {
-      type: 'bar',
+      type: 'doughnut',
       data: {
-        labels: ["Work Outs", "Meals", "Mindfullness"],
+        labels: ["Work Outs", "Meals", "Mindfullness", "Remaining Points for Goal"],
         datasets: [{
-          label: `${currentGoal.name}`,
-          backgroundColor: ['rgb(204, 255, 204)','rgb(255, 255, 204)','rgb(255, 229, 204)'],
-          borderColor: 'rgb(255, 255, 255)',
-          data: [`${workOutpts}`,`${mealpts}`,`${mindfullnesspts}`],
+          backgroundColor: ['rgb(204, 255, 204, 0.9)','rgb(255, 255, 204, 0.9)','rgb(204, 229, 255, 0.9)','rgb(255, 255, 255, 0.9)' ],
+          borderColor: 'rgb(0, 0, 0)',
+          data: [`${workOutpts}`,`${mealpts}`,`${mindfullnesspts}`, `${remainingPts}`],
         }]
       },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero:true
-            }
-          }]
-        }
-      }
-    });
+      options: {}
+    })
   }
 
   function toggleNavBar () {
