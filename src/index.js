@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const navBar = document.querySelector(".sidenav")
   const splashPage = document.querySelector(".splash-page")
   const contentBody = document.querySelector("#content-body")
-
+  const myChart = document.getElementById("myChart")
   loginForm.addEventListener("submit", function(event) {
     event.preventDefault()
     const displayEmail = document.querySelector("#display-email")
@@ -32,6 +32,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
       .then(userJson => findUser(userEmail, userJson))
       .then((user) => renderMyActivities (user))
     }
+
+
+    if (e.target.innerText === 'My Goals') {
+      navBar.style.display = "none"
+      fetch(URL)
+      .then(r => r.json())
+      .then(userJson => findUser(userEmail, userJson))
+      .then((user) => renderGoals(user))
+      // .then((user) => filterGoals(user))
+      // .then((goals) => console.log((goals)))
+    }
+  })
+
+
     if (e.target.id === "display-email"){//user show page
       navBar.style.display = "none"
       contentBody.innerHTML = `<div id="activity-chart" style="width:50%"><canvas id="myChart"></canvas></div>`
@@ -40,8 +54,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
       .then(userJson => findUser(userEmail, userJson))
       .then((user) => renderUserHomePage(user))
 
+
     }
   })
+
 
   function findUser (email, json) {
     return json.find(user => {
@@ -68,8 +84,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
 
+
+  function filterGoals (user) {
+    return user.goals.filter(goal => goal.reached)
+  }
+
+  function goalActivities(user, goalId) {
+    return user.user_activities.filter(ua => ua.goal_id === goalId)
+
   function unreachedGoal(user){
     return user.goals.find( goal => goal.reached == false)
+
   }
   function currentActivities(user, goalId){
     return user.user_activities.filter( ua => ua.goal_id == goalId)
@@ -90,6 +115,63 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     const remainingPts = (currentGoal.value - [workOutpts, mealpts, mindfullnesspts].reduce(reducer, 0))
 
+  function renderGoals(user){
+    const reducer = (acc, curr) => acc + curr
+
+    const renderGoalsList = document.querySelector("#goals-list")
+    const goalsList = filterGoals(user)
+    const goalActivity = goalsList.map(function(goal){
+      return goalActivities(user, goal.id)
+      })
+    const goalNameArray = goalsList.map(goal => goal.name)
+    console.log(goalsList);
+    const goalActpoints = goalActivity.map(function(act) {
+      return act.map(function(act){return act.points}).reduce(reducer, 0)
+    })
+
+    const goalValues = goalsList.map(goal => goal.value)
+    console.log(goalValues)
+    const goalPercentages = goalValues.map(function(value, i) {
+      return (goalActpoints[i] / value) * 100
+    })
+    return `${new Chart(myChart, {
+    type: 'bar',
+    data: {
+      labels: goalNameArray,
+      datasets: [{
+          label: 'total points (%)',
+          data: goalPercentages,
+          backgroundColor: [
+              'rgba(255, 99, 132)',
+              'rgba(54, 162, 235)',
+              'rgba(255, 206, 86)',
+              'rgba(75, 192, 192)',
+              'rgba(153, 102, 255)',
+              'rgba(255, 159, 64)'
+          ],
+          borderColor: [
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero:true
+              }
+          }]
+      }
+    }
+    })}`
+    }
+
     const ctx = document.getElementById('myChart').getContext('2d');
     const chart = new Chart(ctx, {
       type: 'doughnut',
@@ -105,7 +187,5 @@ document.addEventListener("DOMContentLoaded", function(event) {
     })
   }
 
-  function toggleNavBar () {
-  }
 
 });//end of DOMContentLoaded
