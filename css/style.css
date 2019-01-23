@@ -105,6 +105,7 @@ body {
   font-size: 125px;
 }
 
+<<<<<<< HEAD
 .card {
   /* border-width: 5px;
   border-color: black;
@@ -122,4 +123,9 @@ body {
 #hidden-new-activity-form{
   display: none;
   background-color: white;
+=======
+
+#mychart {
+  responsive: true;
+>>>>>>> f1a15f718fe403404e9baf74b6a73fdacd23868c
 }
