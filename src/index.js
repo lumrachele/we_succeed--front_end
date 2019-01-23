@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     if (e.target.id === "display-email"){//user show page
       navBar.style.display = "none"
-      contentBody.innerHTML = `<div id="activity-chart" style="width:55%"><canvas id="myChart"></canvas></div>`
+      contentBody.innerHTML = `<div id="activity-chart" style="width:50%"><canvas id="myChart"></canvas></div>`
       fetch(URL)
       .then(r => r.json())
       .then(userJson => findUser(userEmail, userJson))
