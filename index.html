@@ -24,27 +24,21 @@
       </div>
     </div>
     <div id="hidden-new-activity-form">
-
-<!--     t.integer "user_id"
-    t.integer "activity_id"
-    t.integer "goal_id"
-    t.integer "points"
-    t.string "note" -->
       <form class="create-activity-form" action="index.html" method="post">
         <label for="activity_id">Category</label>
-        <select class="" id="category-select" name="">
+        <select class="" data-input-id="category-select" name="">
           <option selected="selected"  disabled="disabled">Choose a Category</option>
           <option value="1">Workout</option>
           <option value="2">Meal</option>
           <option value="3">Mindfulness</option>
         </select>
         <br>
-        <input data-input-id="" type="hidden" name="goal_id" value="">
+        <input data-input-id="goal" type="hidden" name="goal_id" value="">
         <label for="note">Activity Title</label>
-        <input style="width:250px;" data-input-id="" type="text" name="note" value="" placeholder="e.g. 'Squatz', 'Meditatez', 'Ate a Salad'">
+        <input style="width:250px;" data-input-id="note" type="text" name="note" value="" placeholder="e.g. 'Squatz', 'Meditatez', 'Ate a Salad'">
         <br>
         <label for="points">Points Value</label>
-        <select class="" id="points" name="">
+        <select data-input-id="points" class="" id="points" name="">
           <option selected="selected" disabled="disabled">-</option>
           <option value="1">1</option>
           <option value="2">2</option>
@@ -66,8 +60,13 @@
       </form>
     </div>
       <div class="" id="content-body">
+      </div>
+      <div class="" id="home-page-body">
+      </div>
+      <div class="" id="goal-page-body">
 
       </div>
+
     <div class="splash-page">
 
     <h1 align="center">We Succeed</h1>
@@ -77,6 +76,9 @@
         <input id="login-email"type="text" name="email" value=""><br>
         <input type="submit" value="Login">
       </form>
+      <div class="" id="error-container">
+
+      </div>
     </div>
   </div>
   <div id="goals-list" style="width:35%">

@@ -1,18 +1,28 @@
 const URL = 'http://localhost:3000/api/v1/users'
 let userEmail = ""
 let pointOptions = []
+let currentUser = ""
 
 document.addEventListener("DOMContentLoaded", function(event) {
   const loginForm = document.querySelector("#login-form")
-  const email = document.querySelector("#login-email")
+  const loginEmail = document.querySelector("#login-email")
+  const loginContainer = document.querySelector("#login-container")
+  const errorContainer = document.querySelector("#error-container")
+
   const body = document.querySelector("body")
   const navBarButton = document.querySelector("#open-nav-bar")
   const navBar = document.querySelector(".sidenav")
   const splashPage = document.querySelector(".splash-page")
   const contentBody = document.querySelector("#content-body")
-  const newActivityForm = document.querySelector("#hidden-new-activity-form")
+  const createActivityForm = document.querySelector("#hidden-new-activity-form")
   const pointField = document.querySelector("#points")
   const myChart = document.getElementById("myChart")
+
+  const inputCategory = document.querySelector("[data-input-id='category-select']")
+  const inputGoal = document.querySelector("[data-input-id='goal']")
+  const inputNote = document.querySelector("[data-input-id='note']")
+  const inputPoints = document.querySelector("[data-input-id='points']")
+
 
 //**************** EVENT LISTENERS **********************//
 
@@ -22,13 +32,30 @@ document.addEventListener("DOMContentLoaded", function(event) {
     event.preventDefault()
     //Grabs the email
     const displayEmail = document.querySelector("#display-email")
-    //Hides the Splash Page
-    splashPage.style.display = "none";
-    //Shows the nav bar button - three horizontal lines
-    navBarButton.style.display = "inline-block";
-    //Displays email on nav bar
-    userEmail = email.value
-    displayEmail.innerHTML = `${email.value}`
+    userEmail = loginEmail.value
+
+    fetch(URL)
+    .then(r => r.json())
+    .then(userJson => findUser(userEmail, userJson))
+    .then(foundUser => {
+      if (foundUser){
+        //Hides the Splash Page
+        splashPage.style.display = "none";
+        //Shows the nav bar button - three horizontal lines
+        navBarButton.style.display = "inline-block";
+        currentUser = foundUser
+        userEmail = foundUser.email
+        renderUserHomePage(foundUser)
+      } else{
+        errorContainer.innerHTML="You do not have an account."
+        loginForm.reset()
+      }
+    })
+
+
+
+
+    displayEmail.innerHTML = `${loginEmail.value}`
   })//end of loginform event listener
 
 // Event Listener for Nav Bar Button - 3 horizontal lines
@@ -47,6 +74,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     //profile
     if (e.target.id === "display-email"){//user show page
       navBar.style.width = "0"
+      contentBody.innerHTML = ""
+      createActivityForm.style.display = "none"
       contentBody.innerHTML = `<div id="activity-chart" style="width:50%"><canvas id="myChart"></canvas></div>`
       fetch(URL)
       .then(r => r.json())
@@ -56,8 +85,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     //Activity Page
     if (e.target.innerText === 'My Activities') {
+      myChart.style.display = "none"
+      contentBody.innerHTML = ""
       // navBar.style.display = "none"
-      newActivityForm.style.display = "block";
+      createActivityForm.style.display = "block";
       // console.log(pointFieldDropDown());
       // pointField.options = mapPointOption(pointOptions)
       navBar.style.width = "0"
@@ -70,14 +101,25 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     //Goals Event Listener
     if (e.target.innerText === 'My Goals') {
+      // myChart.style.display = "none"
+      createActivityForm.style.display = "none"
+      contentBody.innerHTML = ""
       navBar.style.width = "0"
       fetch(URL)
       .then(r => r.json())
       .then(userJson => findUser(userEmail, userJson))
-      .then((user) => renderGoals(user))
+      .then((user) =>
+      myChart.innerHTML = renderGoals(user))
     }//end of goals
 
   })//end of navBar event Listener
+
+  createActivityForm.addEventListener('submit', (e)=>{
+    e.preventDefault()
+    console.log(e, category.value);
+  })
+
+
 
   //******************** HELPER FUNCTIONS ********************//
   //Find User
@@ -176,6 +218,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const mindfullnesspts = mindfullness.map(act => act.points).reduce(reducer, 0)
 
     const remainingPts = (currentGoal.value - [workOutpts, mealpts, mindfullnesspts].reduce(reducer, 0))
+
     const ctx = document.getElementById('myChart').getContext('2d');
     const chart = new Chart(ctx, {
       type: 'doughnut',
@@ -211,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       return (goalActpoints[i] / value) * 100
     })
 
-    return `${new Chart(myChart, {
+    return new Chart(myChart, {
       type: 'bar',
         data: {
           labels: goalNameArray,
@@ -239,7 +282,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
           }//end of scales
         }//end of options
     })//end of new Chart
-  }`
   }//end of renderGoals
 
 });//end of DOMContentLoaded
