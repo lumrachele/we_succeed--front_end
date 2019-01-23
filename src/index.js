@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const createActivityForm = document.querySelector("#hidden-new-activity-form")
   const pointField = document.querySelector("#points")
   const myChart = document.getElementById("myChart")
+  const myChart2 = document.getElementById("myChart2")
 
   const inputCategory = document.querySelector("[data-input-id='category-select']")
   const inputGoal = document.querySelector("[data-input-id='goal']")
@@ -73,10 +74,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     //profile
     if (e.target.id === "display-email"){//user show page
+      myChart2.style.display = "none"
       navBar.style.width = "0"
       contentBody.innerHTML = ""
       createActivityForm.style.display = "none"
-      contentBody.innerHTML = `<div id="activity-chart" style="width:50%"><canvas id="myChart"></canvas></div>`
+      contentBody.innerHTML += `<div id="activity-chart" style="width:50%"><canvas id="myChart3"></canvas></div>`
       fetch(URL)
       .then(r => r.json())
       .then(userJson => findUser(userEmail, userJson))
@@ -85,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     //Activity Page
     if (e.target.innerText === 'My Activities') {
-      myChart.style.display = "none"
+      myChart2.style.display = "none"
       contentBody.innerHTML = ""
       // navBar.style.display = "none"
       createActivityForm.style.display = "block";
@@ -101,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     //Goals Event Listener
     if (e.target.innerText === 'My Goals') {
+      myChart2.style.display = "block"
       // myChart.style.display = "none"
       createActivityForm.style.display = "none"
       contentBody.innerHTML = ""
@@ -109,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       .then(r => r.json())
       .then(userJson => findUser(userEmail, userJson))
       .then((user) =>
-      myChart.innerHTML = renderGoals(user))
+      myChart2.innerHTML = renderGoals(user))
     }//end of goals
 
   })//end of navBar event Listener
@@ -219,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     const remainingPts = (currentGoal.value - [workOutpts, mealpts, mindfullnesspts].reduce(reducer, 0))
 
-    const ctx = document.getElementById('myChart').getContext('2d');
+    const ctx = document.getElementById('myChart3').getContext('2d');
     const chart = new Chart(ctx, {
       type: 'doughnut',
       data: {
@@ -254,7 +257,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       return (goalActpoints[i] / value) * 100
     })
 
-    return new Chart(myChart, {
+    return new Chart(myChart2, {
       type: 'bar',
         data: {
           labels: goalNameArray,
