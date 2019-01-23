@@ -1,19 +1,22 @@
 body {
-  background-image: url("https://images.unsplash.com/photo-1427384906349-30452365b5e8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1867&q=80");
+  background-image: url("../images/we_succeed.jpg");
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: auto center;
+  /* background-position: auto center; */
 }
-
-
-
-
 
 #login-container{
   background-color: #fff;
   align-items: center;
-
 }
+
+#content-body {
+  display: flex;
+  flex-wrap: wrap;
+  /* align-items: center; */
+  align-content: center;
+}
+
 
 .center {
   margin: auto;
@@ -25,23 +28,43 @@ body {
 
 .sidenav {
   height: 100%;
-  width: 200px;
+  width: 0;
   position: fixed;
   z-index: 1;
   top: 0;
   left: 0;
   background-color: #111;
   overflow-x: hidden;
+  transition: 0.5s;
   padding-top: 20px;
-  display: none;
+  /* display: none; */
+}
+
+.sidenav h2{
+  color: #818181;
+  width: 30px;
 }
 
 .sidenav h1 {
-  padding: 6px 6px 6px 32px;
+  padding: 25px 8px 8px 32px;
   text-decoration: none;
   /* font-size: 25px; */
   color: #818181;
   display: block;
+  transition: 0.3s;
+}
+
+
+.sidenav .closebtn{
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.sidenav .closebtn :hover {
+  color: #f1f1f1;
 }
 
 .sidenav .my-activities {
@@ -80,4 +103,23 @@ body {
 
 #smile{
   font-size: 125px;
+}
+
+.card {
+  /* border-width: 5px;
+  border-color: black;
+  border-style: solid; */
+  /* background: #CEFED9; */
+  text-align: center;
+  /* margin: 5px; */
+}
+
+
+.container{
+  text-align: center;
+}
+
+#hidden-new-activity-form{
+  display: none;
+  background-color: white;
 }

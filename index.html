@@ -7,22 +7,65 @@
 
     <title>We Succeed</title>
   </head>
-  <body >
-    <button id="open-nav-bar" type="button">Open nav bar!</button>
-
+  <body>
+    <div class="">
+      <span style="font-size:30px;cursor:pointer;" id="open-nav-bar">☰</span>
+    </div>
+    <!-- <button id="open-nav-bar" type="button">Open nav bar!</button> -->
     <div class="sidenav">
+      <h2 class="closebtn" style="font-size:30px;cursor:pointer;">x</h2>
       <h1 id="display-email"><h1>
-
-        <div class="my-activities">
-          <p>My Activities</p>
-        </div>
-        <div class="my-goals">
-          <p>My Goals</p>
-        </div>
-
+      <div class="my-activities">
+        <p>My Activities</p>
       </div>
+      <div class="my-goals">
+        <p>My Goals</p>
+      </div>
+    </div>
+    <div id="hidden-new-activity-form">
+
+<!--     t.integer "user_id"
+    t.integer "activity_id"
+    t.integer "goal_id"
+    t.integer "points"
+    t.string "note" -->
+      <form class="create-activity-form" action="index.html" method="post">
+        <label for="activity_id">Category</label>
+        <select class="" id="category-select" name="">
+          <option selected="selected"  disabled="disabled">Choose a Category</option>
+          <option value="1">Workout</option>
+          <option value="2">Meal</option>
+          <option value="3">Mindfulness</option>
+        </select>
+        <br>
+        <input data-input-id="" type="hidden" name="goal_id" value="">
+        <label for="note">Activity Title</label>
+        <input style="width:250px;" data-input-id="" type="text" name="note" value="" placeholder="e.g. 'Squatz', 'Meditatez', 'Ate a Salad'">
+        <br>
+        <label for="points">Points Value</label>
+        <select class="" id="points" name="">
+          <option selected="selected" disabled="disabled">-</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+        </select>
+        <br>
+        <p>Point Recommendations:</p>
+        <p>Easy Activity: 1-3 points</p>
+        <p>Medium Activity: 4-6 points</p>
+        <p>Hard Activity: 7-9 points</p>
+        <br>
+        <input type="submit" name="create-activity" value="Log Activity">
+      </form>
+    </div>
       <div class="" id="content-body">
-        
+
       </div>
     <div class="splash-page">
 
