@@ -32,9 +32,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
       .then(userJson => findUser(userEmail, userJson))
       .then((user) => renderMyActivities (user))
     }
+    if (e.target.id === "display-email"){//user show page
+      navBar.style.display = "none"
+      contentBody.innerHTML = `<div id="activity-chart"><canvas id="myChart"></canvas></div>`
+      fetch(URL)
+      .then(r => r.json())
+      .then(userJson => findUser(userEmail, userJson))
+      .then((user) => renderUserHomePage(user))
+
+    }
   })
-
-
 
   function findUser (email, json) {
     return json.find(user => {
@@ -45,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   function renderMyActivities (user) {
     contentBody.innerHTML = formatActivities(user)
   }
-
 
   function formatActivities(user) {
     return user.user_activities.map(ua => {
@@ -60,9 +66,57 @@ document.addEventListener("DOMContentLoaded", function(event) {
       `
     }).join('')
   }
-  function toggleNavBar () {
+
+
+  function unreachedGoal(user){
+    return user.goals.find( goal => goal.reached == false)
+  }
+  function currentActivities(user, goalId){
+    return user.user_activities.filter( ua => ua.goal_id == goalId)
 
   }
 
+  function renderUserHomePage(user){
+    const reducer = (accumulator = 0, currentValue) => accumulator + currentValue;
+
+    const currentGoal = unreachedGoal(user)
+    const allActivities = currentActivities(user, currentGoal.id)
+    const workOuts = allActivities.filter( activity => activity.activity_id == 1)
+    const meals = allActivities.filter( activity => activity.activity_id == 2)
+    const mindfullness = allActivities.filter( activity => activity.activity_id == 3)
+
+    const workOutpts = workOuts.map(act => act.points).reduce(reducer, 0)
+    const mealpts = meals.map(act => act.points).reduce(reducer, 0)
+    const mindfullnesspts = mindfullness.map(act => act.points).reduce(reducer, 0)
+
+    console.log(workOutpts, mealpts, mindfullnesspts)
+
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ["Work Outs", "Meals", "Mindfullness"],
+        datasets: [{
+          label: `${currentGoal.name}`,
+          backgroundColor: ['rgb(204, 255, 204)','rgb(255, 255, 204)','rgb(255, 229, 204)'],
+          borderColor: 'rgb(255, 255, 255)',
+          data: [`${workOutpts}`,`${mealpts}`,`${mindfullnesspts}`],
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero:true
+            }
+          }]
+        }
+      }
+    });
+  }
+
+  function toggleNavBar () {
+  }
 
 });//end of DOMContentLoaded
