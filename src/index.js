@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       .then((user) => renderMyActivities (user))
     }
 
+
     if (e.target.innerText === 'My Goals') {
       navBar.style.display = "none"
       fetch(URL)
@@ -45,6 +46,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
   })
 
 
+    if (e.target.id === "display-email"){//user show page
+      navBar.style.display = "none"
+      contentBody.innerHTML = `<div id="activity-chart" style="width:50%"><canvas id="myChart"></canvas></div>`
+      fetch(URL)
+      .then(r => r.json())
+      .then(userJson => findUser(userEmail, userJson))
+      .then((user) => renderUserHomePage(user))
+
+
+    }
+  })
 
 
   function findUser (email, json) {
@@ -56,7 +68,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   function renderMyActivities (user) {
     contentBody.innerHTML = formatActivities(user)
   }
-
 
   function formatActivities(user) {
     return user.user_activities.map(ua => {
@@ -73,17 +84,37 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
 
+
   function filterGoals (user) {
     return user.goals.filter(goal => goal.reached)
   }
 
   function goalActivities(user, goalId) {
     return user.user_activities.filter(ua => ua.goal_id === goalId)
+
+  function unreachedGoal(user){
+    return user.goals.find( goal => goal.reached == false)
+
+  }
+  function currentActivities(user, goalId){
+    return user.user_activities.filter( ua => ua.goal_id == goalId)
   }
 
-function goalPoints () {
+  function renderUserHomePage(user){
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
-}
+    const currentGoal = unreachedGoal(user)
+    const allActivities = currentActivities(user, currentGoal.id)
+    const workOuts = allActivities.filter( activity => activity.activity_id == 1)
+    const meals = allActivities.filter( activity => activity.activity_id == 2)
+    const mindfullness = allActivities.filter( activity => activity.activity_id == 3)
+
+    const workOutpts = workOuts.map(act => act.points).reduce(reducer, 0)
+    const mealpts = meals.map(act => act.points).reduce(reducer, 0)
+    const mindfullnesspts = mindfullness.map(act => act.points).reduce(reducer, 0)
+
+    const remainingPts = (currentGoal.value - [workOutpts, mealpts, mindfullnesspts].reduce(reducer, 0))
+
   function renderGoals(user){
     const reducer = (acc, curr) => acc + curr
 
@@ -140,5 +171,21 @@ function goalPoints () {
     }
     })}`
     }
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ["Work Outs", "Meals", "Mindfullness", "Remaining Points for Goal"],
+        datasets: [{
+          backgroundColor: ['rgb(204, 255, 204, 0.9)','rgb(255, 255, 204, 0.9)','rgb(204, 229, 255, 0.9)','rgb(255, 255, 255, 0.9)' ],
+          borderColor: 'rgb(192, 192, 192, 0.5)',
+          data: [`${workOutpts}`,`${mealpts}`,`${mindfullnesspts}`, `${remainingPts}`],
+        }]
+      },
+      options: {}
+    })
+  }
+
 
 });//end of DOMContentLoaded

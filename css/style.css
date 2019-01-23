@@ -81,3 +81,8 @@ body {
 #smile{
   font-size: 125px;
 }
+
+
+#mychart {
+  responsive: true;
+}
