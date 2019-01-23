@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const navBar = document.querySelector(".sidenav")
   const splashPage = document.querySelector(".splash-page")
   const contentBody = document.querySelector("#content-body")
-
+  const myChart = document.getElementById("myChart")
   loginForm.addEventListener("submit", function(event) {
     event.preventDefault()
     const displayEmail = document.querySelector("#display-email")
@@ -32,7 +32,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
       .then(userJson => findUser(userEmail, userJson))
       .then((user) => renderMyActivities (user))
     }
+
+    if (e.target.innerText === 'My Goals') {
+      navBar.style.display = "none"
+      fetch(URL)
+      .then(r => r.json())
+      .then(userJson => findUser(userEmail, userJson))
+      .then((user) => renderGoals(user))
+      // .then((user) => filterGoals(user))
+      // .then((goals) => console.log((goals)))
+    }
   })
+
 
 
 
@@ -60,9 +71,75 @@ document.addEventListener("DOMContentLoaded", function(event) {
       `
     }).join('')
   }
-  function toggleNavBar () {
 
+
+  function filterGoals (user) {
+    return user.goals.filter(goal => goal.reached)
   }
+
+  function goalActivities(user, goalId) {
+    return user.user_activities.filter(ua => ua.goal_id === goalId)
+  }
+
+function goalPoints () {
+
+}
+  function renderGoals(user){
+    const renderGoalsList = document.querySelector("#goals-list")
+
+    const goalsList = filterGoals(user)
+    const someShit = goalsList.map(function(goal){
+      return goalActivities(user, goal.id)
+      })
+      console.log(someShit);
+    }
+
+
+
+
+
+
+//   function renderGoals (goals) {
+//     debugger
+//     return goals.map(goal => {
+//       return `${new Chart(myChart, {
+//     type: 'bar',
+//     data: {
+//         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+//         datasets: [{
+//             label: '# of Votes',
+//             data: [12, 19, 3, 5, 2, 3],
+//             backgroundColor: [
+//                 'rgba(255, 99, 132)',
+//                 'rgba(54, 162, 235)',
+//                 'rgba(255, 206, 86)',
+//                 'rgba(75, 192, 192)',
+//                 'rgba(153, 102, 255)',
+//                 'rgba(255, 159, 64)'
+//             ],
+//             borderColor: [
+//                 'rgba(255,99,132,1)',
+//                 'rgba(54, 162, 235, 1)',
+//                 'rgba(255, 206, 86, 1)',
+//                 'rgba(75, 192, 192, 1)',
+//                 'rgba(153, 102, 255, 1)',
+//                 'rgba(255, 159, 64, 1)'
+//             ],
+//             borderWidth: 1
+//         }]
+//     },
+//     options: {
+//         scales: {
+//             yAxes: [{
+//                 ticks: {
+//                     beginAtZero:true
+//                 }
+//             }]
+//         }
+//     }
+// })}`
+//     }).join('')
+//   }
 
 
 });//end of DOMContentLoaded
