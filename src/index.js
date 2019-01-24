@@ -263,17 +263,30 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     const ctx = document.getElementById('myChart3').getContext('2d');
     const chart = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ["Work Outs", "Meals", "Mindfullness", "Remaining Points for Goal"],
-        datasets: [{
-          backgroundColor: ['rgb(204, 229, 255, 1)','rgb(255, 255, 204, 1)','rgb(204, 255, 204, 1)','rgb(255, 255, 255, 1)' ],
-          borderColor: 'rgb(192, 192, 192, 0.5)',
-          data: [`${workOutpts}`,`${mealpts}`,`${mindfullnesspts}`, `${remainingPts}`],
-        }]//end of datasets
-      },
-      options: {}
-    })//end of const chart
+          type: 'doughnut',
+          data: {
+            labels: ["Work Outs", "Meals", "Mindfullness", "Remaining Points for Goal"],
+            datasets: [{
+              backgroundColor: ['rgb(204, 229, 255, 1)','rgb(255, 255, 204, 1)','rgb(204, 255, 204, 1)','rgb(255, 255, 255, 1)' ],
+              borderColor: 'rgb(192, 192, 192, 0.5)',
+              data: [`${workOutpts}`,`${mealpts}`,`${mindfullnesspts}`, `${remainingPts}`],
+            }]//end of datasets
+          },
+          options: {
+            title: {
+              display: true,
+              text: `${currentGoal.name}`,
+              fontSize: 50,
+              fontStyle: "bold"
+            },//end of title
+            legend:{
+              labels: {
+                fontSize: 20,
+                fontStyle: "bold"
+              }//end of lables
+            }//end of legend
+          }//end of options
+        })//end of const chart
   }//end of renderUserHomePage
 
   //renderGoals
