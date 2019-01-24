@@ -2,13 +2,16 @@ const URL = 'http://localhost:3000/api/v1/users'
 let userEmail = ""
 let pointOptions = []
 let currentUser = ""
+let currentGoal = ""
+const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  Chart.defaults.global.defaultFontColor = "#00000"
+  Chart.defaults.global.defaultFontColor = "#666"
   const loginForm = document.querySelector("#login-form")
   const loginEmail = document.querySelector("#login-email")
   const loginContainer = document.querySelector("#login-container")
   const errorContainer = document.querySelector("#error-container")
+  const successMessage = document.querySelector("#success-message")
 
   const body = document.querySelector("body")
   const navBarButton = document.querySelector("#open-nav-bar")
@@ -16,6 +19,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const splashPage = document.querySelector(".splash-page")
   const contentBody = document.querySelector("#content-body")
   const createActivityForm = document.querySelector("#hidden-new-activity-form")
+  const goalForm = document.querySelector("#goal-form")
+  const inputGoalName = document.querySelector("#input-goal-name")
+  // const inputUserId = document.querySelector("#input-user-id")
+  const inputPointValue = document.querySelector("#input-point-value")
+
+
   const pointField = document.querySelector("#points")
   const myChart = document.getElementById("myChart")
   const myChart2 = document.getElementById("myChart2")
@@ -89,8 +98,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
     //Activity Page
     if (e.target.innerText === 'My Activities') {
       myChart2.style.display = "none"
+      createActivityForm.style.display = "block"
       // contentBody.innerHTML = ""
-      createActivityForm.style.display = "block";
+      if (!currentGoal.reached){
+        createActivityForm.style.display = "block";
+      }
+      else {
+        createActivityForm.style.display = "none";
+      }
       // console.log(pointFieldDropDown());
       // pointField.options = mapPointOption(pointOptions)
       navBar.style.width = "0"
@@ -120,6 +135,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 // create activity form event listener
   createActivityForm.addEventListener('submit', (e)=>{
     e.preventDefault()
+
     //creating a new user_activity
     //input goal value should be the goal that has goal.reached=false
     const createUserId = currentUser.id
@@ -148,20 +164,71 @@ document.addEventListener("DOMContentLoaded", function(event) {
     .then((res)=>{
       return res.json()
     })
-    .then((createdUA)=>{
-      console.log(createdUA)
-    })
+    // .then((createdUA)=>{
+    //   console.log(createdUA)
+    // })
     .then(createdUA =>{
       fetch(`${URL}/${createUserId}`)
       .then(r => r.json())
       .then((updatedUser)=>{
         renderMyActivities(updatedUser)
         colorCard()
-      })
-    })
+        currentUser = updatedUser
+        if (goalReached(updatedUser)) {
+          createActivityForm.style.display = "none"
+          successMessage.style.display = "block"
+          // successMessage.innerHTML += `goalname`
+
+
+          fetch(`http://localhost:3000/api/v1/goals/${createGoalId}`,{
+            method: "PATCH",
+            headers: {
+              "Content-Type" : "application/json",
+              "Accept": "application/json"
+            },
+            body : JSON.stringify({
+              reached: true,
+              current: false
+            })//end of body
+          })//end of fetch
+
+        }//end of if statement if goal reached
+      })//end of 2nd then
+    })//end of created ua then
 
   })//end of create User activity form
 
+  goalForm.addEventListener('submit', (e)=>{
+    e.preventDefault()
+
+    const submittedGoalName = inputGoalName.value
+    const submittedUserId = currentUser.id
+    const submittedPointValue = inputPointValue.value
+
+    fetch("http://localhost:3000/api/v1/goals", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        name: submittedGoalName,
+        value: submittedPointValue,
+        user_id: submittedUserId
+      })//end of body
+    })//end of fetch
+    .then(res=>res.json())
+    .then((createdGoal) =>{
+
+      // goalForm.style.display = "none"
+
+      currentGoal = unreachedGoal(currentUser)
+      successMessage.style.display = "none"
+      createActivityForm.style.display = "block"
+
+    })
+
+  })
 
 
   //******************** HELPER FUNCTIONS ********************//
@@ -222,6 +289,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
     })
   }// end of colorCard
 
+  function goalReached(user) {
+    const currentGoal = unreachedGoal(user)
+    const currentGoalActivities = goalActivities(user, currentGoal.id)
+    const currentGoalPts = currentGoalActivities.map(function(act) {
+      return act.points}).reduce(reducer, 0)
+
+    return currentGoalPts >= currentGoal.value
+  }
   // function toggleNavBar () {
   //
   // }
@@ -246,9 +321,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     return user.user_activities.filter( ua => ua.goal_id == goalId)
   }//currentActivities
 
+
+
   //renderUserHomePage
   function renderUserHomePage(user){
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
     const currentGoal = unreachedGoal(user)
     const allActivities = currentActivities(user, currentGoal.id)
@@ -260,7 +336,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const mealpts = meals.map(act => act.points).reduce(reducer, 0)
     const mindfullnesspts = mindfullness.map(act => act.points).reduce(reducer, 0)
 
-    const remainingPts = (currentGoal.value - [workOutpts, mealpts, mindfullnesspts].reduce(reducer, 0))
+    let remainingPts = (currentGoal.value - [workOutpts, mealpts, mindfullnesspts].reduce(reducer, 0))
+    if (remainingPts <= 0){
+      remainingPts = 0
+    }
 
     const ctx = document.getElementById('myChart3').getContext('2d');
     const chart = new Chart(ctx, {

@@ -23,6 +23,22 @@
         <p>My Goals</p>
       </div>
     </div>
+
+    <div id="success-message">
+      <h1>Congratulations, you reached your goal! Go celebrate.</h1>
+      <br>
+      <h2>Create a New Goal!</h2>
+      <br>
+      <form class="" action="index.html" method="post" id="goal-form">
+        <label for="goal-name"> Goal Name</label>
+        <input id="input-goal-name"type="text" name="input-goal" value=""><br>
+        <input id="input-user-id"type="hidden" name="input-user" value=""><br>
+        <label for="goal-points">Point Value</label>
+        <input id="input-point-value"type="number" name="input-goal-value" value=""><br>
+        <input type="submit" value="Create Goal">
+      </form>
+    </div>
+
     <div id="hidden-new-activity-form">
       <form class="create-activity-form" action="index.html" method="post">
         <label for="activity_id">Category</label>

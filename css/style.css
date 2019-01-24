@@ -134,6 +134,14 @@ body {
 
 #goals-list {
   width: 35%;
-  padding-left: 32.5%;
+  transform: translateX(85%);
   display:flex;
+}
+
+#myChart3 {
+  transform: translateX(50%);
+}
+
+#success-message{
+  display: none;
 }
