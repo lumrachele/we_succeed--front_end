@@ -57,12 +57,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
         currentUser = foundUser
         userEmail = foundUser.email
         renderUserHomePage(foundUser)
+        currentGoal = unreachedGoal(foundUser)
+        console.log(currentGoal);
       } else{
         errorContainer.innerHTML="You do not have an account."
         loginForm.reset()
       }
     })
-
 
 
 
@@ -84,6 +85,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     //profile / home page
     if (e.target.id === "display-email"){//user show page
+      if (unreachedGoal(currentUser) == undefined) {
+        successMessage.style.display = "block"
+      }
       myChart2.style.display = "none"
       navBar.style.width = "0"
       contentBody.innerHTML = ""
@@ -394,8 +398,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         data: {
           labels: goalNameArray,
           datasets: [{
-              label: 'total points (%)',
-              data: goalPercentages,
+              label: 'total points',
+              data: goalValues,
               backgroundColor: ['rgba(255, 99, 132)','rgba(54, 162, 235)','rgba(255, 206, 86)','rgba(75, 192, 192)','rgba(153, 102, 255)','rgba(255, 159, 64)'],
               borderColor: [
               'rgba(255,99,132,1)',
