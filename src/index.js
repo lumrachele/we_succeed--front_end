@@ -4,6 +4,7 @@ let pointOptions = []
 let currentUser = ""
 
 document.addEventListener("DOMContentLoaded", function(event) {
+  Chart.defaults.global.defaultFontColor = "#00000"
   const loginForm = document.querySelector("#login-form")
   const loginEmail = document.querySelector("#login-email")
   const loginContainer = document.querySelector("#login-container")
@@ -276,6 +277,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
           }]// end of datasets
         },//end of data
         options: {
+          legend: {
+            labels: {
+                fontColor: "black",
+                fontSize: 24
+            }
+        },
           scales: {
               yAxes: [{
                   ticks: {
