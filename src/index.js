@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     if(e.target == document.querySelector(".closebtn")){
       navBar.style.width = "0"
     }
-    //profile
+    //profile / home page
     if (e.target.id === "display-email"){//user show page
       myChart2.style.display = "none"
       navBar.style.width = "0"
@@ -88,8 +88,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     //Activity Page
     if (e.target.innerText === 'My Activities') {
       myChart2.style.display = "none"
-      contentBody.innerHTML = ""
-      // navBar.style.display = "none"
+      // contentBody.innerHTML = ""
       createActivityForm.style.display = "block";
       // console.log(pointFieldDropDown());
       // pointField.options = mapPointOption(pointOptions)
@@ -117,10 +116,50 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   })//end of navBar event Listener
 
+// create activity form event listener
   createActivityForm.addEventListener('submit', (e)=>{
     e.preventDefault()
-    console.log(e, category.value);
-  })
+    //creating a new user_activity
+    //input goal value should be the goal that has goal.reached=false
+    const createUserId = currentUser.id
+    const createActivityId = inputCategory.value
+    const createCategory = inputCategory.value
+    const createNote = inputNote.value
+    const createPoints = inputPoints.value
+
+    inputGoal.value = unreachedGoal(currentUser).id
+    const createGoalId = inputGoal.value
+
+    fetch("http://localhost:3000/api/v1/user_activities", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },//end of headers
+      body: JSON.stringify({
+        user_id: createUserId,
+        activity_id: createActivityId,
+        goal_id: createGoalId,
+        points: createPoints,
+        note: createNote
+      })//end of body stringify
+    })// end of fetch
+    .then((res)=>{
+      return res.json()
+    })
+    .then((createdUA)=>{
+      console.log(createdUA)
+    })
+    .then(createdUA =>{
+      fetch(`${URL}/${createUserId}`)
+      .then(r => r.json())
+      .then((updatedUser)=>{
+        renderMyActivities(updatedUser)
+        colorCard()
+      })
+    })
+
+  })//end of create User activity form
 
 
 
@@ -228,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       data: {
         labels: ["Work Outs", "Meals", "Mindfullness", "Remaining Points for Goal"],
         datasets: [{
-          backgroundColor: ['rgb(204, 255, 204, 0.9)','rgb(255, 255, 204, 0.9)','rgb(204, 229, 255, 0.9)','rgb(255, 255, 255, 0.9)' ],
+          backgroundColor: ['rgb(204, 229, 255, 1)','rgb(255, 255, 204, 1)','rgb(204, 255, 204, 1)','rgb(255, 255, 255, 1)' ],
           borderColor: 'rgb(192, 192, 192, 0.5)',
           data: [`${workOutpts}`,`${mealpts}`,`${mindfullnesspts}`, `${remainingPts}`],
         }]//end of datasets
