@@ -224,6 +224,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           // createActivityForm.style.display = "none"
           modal.style.display = "none";
           openModalBtn.style.display = "none"
+          window.scrollTo(0,0)
           successMessage.style.display = "block"
           audio.play()
           // successMessage.innerHTML += `goalname`
@@ -453,7 +454,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         data: {
           labels: goalNameArray,
           datasets: [{
-              label: 'total points (%)',
+              label: 'total points',
               data: goalActpoints,
               backgroundColor: chartColor,
               borderColor:
