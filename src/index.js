@@ -13,16 +13,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const errorContainer = document.querySelector("#error-container")
   const successMessage = document.querySelector("#success-message")
 
+  const audio = document.querySelector("#my-audio")
 
-  // Get the modal
-const modal = document.getElementById('myModal');
+    // Get the modal
+  const modal = document.getElementById('myModal');
 
-// Get the button that opens the modal
-const openModalBtn = document.getElementById("myBtn");
+  // Get the button that opens the modal
+  const openModalBtn = document.getElementById("myBtn");
 
-// Get the <span> element that closes the modal
-const span = document.getElementsByClassName("close")[0];
-
+  // Get the <span> element that closes the modal
+  const span = document.getElementsByClassName("close")[0];
 
   const body = document.querySelector("body")
   const navBarButton = document.querySelector("#open-nav-bar")
@@ -34,11 +34,11 @@ const span = document.getElementsByClassName("close")[0];
   const goalForm = document.querySelector("#goal-form")
   const inputGoalName = document.querySelector("#input-goal-name")
   const inputPointValue = document.querySelector("#input-point-value")
+
   const inputCategory = document.querySelector("[data-input-id='category-select']")
   const inputGoal = document.querySelector("[data-input-id='goal']")
   const inputNote = document.querySelector("[data-input-id='note']")
   const inputPoints = document.querySelector("[data-input-id='points']")
-
 
   const pointField = document.querySelector("#points")
   const myChart = document.getElementById("myChart")
@@ -49,7 +49,6 @@ const span = document.getElementsByClassName("close")[0];
 //**************** EVENT LISTENERS **********************//
 
 // Event Listener for Login Splash Page
-
   loginForm.addEventListener("submit", function(event) {
     event.preventDefault()
     openModalBtn.style.display = "none"
@@ -83,7 +82,7 @@ const span = document.getElementsByClassName("close")[0];
 
 
 
-    displayEmail.innerHTML = `${loginEmail.value}`
+    displayEmail.innerText = `${loginEmail.value}`
   })//end of loginform event listener
 
 // Event Listener for Nav Bar Button - 3 horizontal lines
@@ -103,16 +102,19 @@ const span = document.getElementsByClassName("close")[0];
     //profile / home page
     if (e.target.id === "display-email"){
       openModalBtn.style.display = "none"
+
+
       //user show page
       if (unreachedGoal(currentUser) == undefined) {
         successMessage.style.display = "block"
+        audio.play()
         openModalBtn.style.display = "none"
       }
       myChart2.style.display = "none"
       navBar.style.width = "0"
       contentBody.innerHTML = ""
       // createActivityForm.style.display = "none"
-      contentBody.innerHTML += `<div id="activity-chart" style="width:50%"><canvas id="myChart3"></canvas></div>`
+      contentBody.innerHTML += `<div id="activity-chart" style="width:45%"><canvas id="myChart3"></canvas></div>`
       fetch(URL)
       .then(r => r.json())
       .then(userJson => findUser(userEmail, userJson))
@@ -159,7 +161,7 @@ const span = document.getElementsByClassName("close")[0];
       .then(r => r.json())
       .then(userJson => findUser(userEmail, userJson))
       .then((user) =>
-      myChart2.innerHTML = renderGoals(user))
+      myChart2.innerHTML += renderGoals(user))
     }//end of goals
 
   })//end of navBar event Listener
@@ -216,11 +218,14 @@ const span = document.getElementsByClassName("close")[0];
         renderMyActivities(updatedUser)
         colorCard()
         currentUser = updatedUser
+        window.scrollTo(0,document.body.scrollHeight);
+        inputNote.value = ""
         if (goalReached(updatedUser)) {
           // createActivityForm.style.display = "none"
           modal.style.display = "none";
           openModalBtn.style.display = "none"
           successMessage.style.display = "block"
+          audio.play()
           // successMessage.innerHTML += `goalname`
 
 
@@ -271,7 +276,8 @@ const span = document.getElementsByClassName("close")[0];
       successMessage.style.display = "none"
       // createActivityForm.style.display = "block"
       // openModalBtn.style.display = "block"
-
+      inputGoalName.value = ""
+      inputPointValue.value = ""
     })
 
   })
@@ -408,7 +414,8 @@ const span = document.getElementsByClassName("close")[0];
             legend:{
               labels: {
                 fontSize: 20,
-                fontStyle: "bold"
+                fontStyle: "bold",
+                fontFamily: "'Lato', 'sans-serif'"
               }//end of lables
             }//end of legend
           }//end of options
@@ -434,50 +441,49 @@ const span = document.getElementsByClassName("close")[0];
     const goalPercentages = goalValues.map(function(value, i) {
       return (goalActpoints[i] / value) * 100
     })
-    let chartColors = []
-    goalsList.forEach(goal => {
-      chartColors.push('rgba(255,99,132,1)')
+    const colorArray = ['rgb(204, 229, 255, 1)','rgb(255, 255, 204, 1)','rgb(204, 255, 204, 1)']
+    const chartColor = []
+    goalsList.forEach(function(goal){
+      chartColor.push(colorArray[Math.floor(Math.random()* 3)])
     })
+
+
     return new Chart(myChart2, {
       type: 'bar',
         data: {
           labels: goalNameArray,
           datasets: [{
-              label: 'Goal History',
-              data: goalValues,
-              backgroundColor: ['rgba(255, 99, 132)','rgba(54, 162, 235)','rgba(255, 206, 86)','rgba(75, 192, 192)','rgba(153, 102, 255)','rgba(255, 159, 64)','rgba(255, 99, 132)','rgba(54, 162, 235)','rgba(255, 206, 86)','rgba(75, 192, 192)','rgba(153, 102, 255)','rgba(255, 159, 64)','rgba(255, 99, 132)','rgba(54, 162, 235)','rgba(255, 206, 86)','rgba(75, 192, 192)','rgba(153, 102, 255)','rgba(255, 159, 64)'],
-              borderColor: [
-              'rgba(255,99,132,1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-              'rgba(255,99,132,1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)','rgba(255, 99, 132)','rgba(54, 162, 235)','rgba(255, 206, 86)','rgba(75, 192, 192)','rgba(153, 102, 255)','rgba(255, 159, 64)'],
+              label: 'total points (%)',
+              data: goalActpoints,
+              backgroundColor: chartColor,
+              borderColor:
+              chartColor,
               borderWidth: 1
           }]// end of datasets
         },//end of data
         options: {
           legend: {
             labels: {
-                fontColor: "black",
-                fontSize: 24
+                fontColor: "none",
+                fontSize: 0,
+                fontFamily: "'Lato', 'sans-serif'"
             }
         },
           scales: {
+            xAxes: [{
+              ticks: {
+                  beginAtZero:true,
+                  fontSize: 25
+              }//end of ticks
+          }],//end of yAxes
               yAxes: [{
                   ticks: {
-                      beginAtZero:true
+                      beginAtZero:true,
+                      fontSize: 25
                   }//end of ticks
               }]//end of yAxes
           }//end of scales
         }//end of options
     })//end of new Chart
   }//end of renderGoals
-
 });//end of DOMContentLoaded

@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
   <head>
     <meta charset="utf-8">
     <script src="./src/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
 
     <title>We Succeed</title>
   </head>
+
+
   <body>
     <div class="">
       <span style="font-size:30px;cursor:pointer;" id="open-nav-bar">☰</span>
@@ -15,7 +19,7 @@
     <!-- <button id="open-nav-bar" type="button">Open nav bar!</button> -->
     <div class="sidenav">
       <h2 class="closebtn" style="font-size:30px;cursor:pointer;">x</h2>
-      <h1 id="display-email"><h1>
+      <h1 id="display-email"></h1>
       <div class="my-activities">
         <p>My Activities</p>
       </div>
@@ -25,12 +29,20 @@
     </div>
 
     <div id="success-message" class="form-style-2">
+      <audio id="my-audio" src="ta-da.mp3">
+      </audio>
+
       <h1>Congratulations, you reached your goal! Go celebrate.</h1>
+
       <br>
-      <div class="form-style-2-heading">Create a New Goal!</div>
+
+      <div class="form-style-2-heading">Create a New Goal!
+      </div>
       <br>
+
       <form class="" action="index.html" method="post" id="goal-form">
-        <label for="goal-name" class="input-field"> Goal Name</label>
+        <label for="goal-name" class="input-field"> Goal Name
+        </label>
         <input id="input-goal-name"type="text" name="input-goal" value=""><br>
         <br><br>
         <input id="input-user-id"type="hidden" name="input-user" value=""><br>
@@ -52,46 +64,49 @@
         <span class="close">&times;</span>
 
 
-    <div id="hidden-new-activity-form" class="form-style-2">
-      <div class="form-style-2-heading">Log an Activity</div>
-      <form class="create-activity-form" action="index.html" method="post">
-        <label for="activity_id" class="input-field">Category</label>
-        <select class="select-field" data-input-id="category-select" name="">
-          <option selected="selected"  disabled="disabled">Choose a Category</option>
-          <option value="1">Workout</option>
-          <option value="2">Meal</option>
-          <option value="3">Mindfulness</option>
-        </select>
-        <br><br>
-        <input data-input-id="goal" type="hidden" name="goal_id" value="">
-        <label for="note" class="input-field">Activity Title</label>
-        <input style="width:250px;" data-input-id="note" type="text" name="note" value="" placeholder="e.g. 'Squatz', 'Meditatez', 'Ate a Salad'">
-        <br><br>
-        <label for="points" class="input-field">Points Value</label>
-        <select data-input-id="points" class="select-field" id="points" name="">
-          <option selected="selected" disabled="disabled">-</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-        </select>
-        <br><br>
-        <input type="submit" name="create-activity" value="Log Activity">
-        <br>
-      </form>
-    </div>
-    <div id="recommendations">
-      <br><br><br>
-      <p><strong>Point Recommendations:</strong></p>
-      <p>Easy Activity: 1-3 points</p>
-      <p>Medium Activity: 4-6 points</p>
-      <p>Hard Activity: 7-9 points</p>
-    </div>
+        <div id="hidden-new-activity-form" class="form-style-2">
+          <div class="form-style-2-heading">Log an Activity</div>
+          <form class="create-activity-form" action="index.html" method="post">
+            <label for="activity_id" class="input-field">Category</label>
+            <select class="select-field" data-input-id="category-select" name="">
+              <option selected="selected"  disabled="disabled">Choose a Category</option>
+              <option value="1">Workout</option>
+              <option value="2">Meal</option>
+              <option value="3">Mindfulness</option>
+            </select>
+            <br><br>
+            <input data-input-id="goal" type="hidden" name="goal_id" value="">
+            <label for="note" class="input-field">Activity Title</label>
+            <input style="width:250px;" data-input-id="note" type="text" name="note" value="" placeholder="e.g. 'Squatz', 'Meditatez', 'Ate a Salad'">
+            <br><br>
+            <label for="points" class="input-field">Points Value</label>
+            <select data-input-id="points" class="select-field" id="points" name="">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+            </select>
+            <br><br>
+            <input type="submit" name="create-activity" value="Log Activity">
+            <br>
+          </form>
+        </div>
+        <!-- end of hidden new activity form -->
+
+
+        <div id="recommendations">
+          <br><br><br>
+          <p><strong>Point Recommendations:</strong></p>
+          <p>Easy Activity: 1-3 points</p>
+          <p>Medium Activity: 4-6 points</p>
+          <p>Hard Activity: 7-9 points</p>
+        </div>
+        <!-- end of recommendations -->
   </div>
   <!-- end of modal content -->
 
@@ -100,28 +115,29 @@
 
       <div class="" id="content-body">
       </div>
-      <div class="" id="home-page-body">
+
+      <div class="splash-page">
+        <h1 align="center">We Succeed</h1>
+        <div id="login-container" class="center">
+
+          <form class="" action="index.html" method="post" id="login-form">
+
+            <label for="email"> Please Login</label><br><br>
+
+            <input id="login-email" type="text" name="email" value="" placeholder="email"><br><br>
+
+            <input type="submit" value="Login">
+
+          </form>
+          <div class="" id="error-container">
+          </div>
+        </div>
       </div>
-      <div class="" id="goal-page-body">
 
-      </div>
-
-    <div class="splash-page">
-
-    <h1 align="center">We Succeed</h1>
-    <div id="login-container" class="center">
-      <form class="" action="index.html" method="post" id="login-form">
-        <label for="email"> email</label>
-        <input id="login-email"type="text" name="email" value=""><br>
-        <input type="submit" value="Login">
-      </form>
-      <div class="" id="error-container">
-
-      </div>
-    </div>
-  </div>
   <div id="goals-list">
-    <canvas id="myChart2" width="200" height="200"></canvas>
+    <canvas id="myChart2" width="175" height="auto"></canvas>
   </div>
+
+
   </body>
 </html>

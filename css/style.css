@@ -1,13 +1,16 @@
 /* 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif; */
 
 .form-style-2{
-	max-width: 500px;
+	max-width: auto;
 	padding: 20px 12px 10px 20px;
-	/* font: 13px Arial, Helvetica, sans-serif; */
+	font-family: 'Lato', sans-serif;
+  background-color: white;
+  opacity: 0.8;
 }
 .form-style-2-heading{
 	font-weight: bold;
 	/* font-style: italic; */
+  text-shadow: 2px 2px #FFF;
 	border-bottom: 2px solid #ddd;
 	margin-bottom: 20px;
 	font-size: 3em;
@@ -16,13 +19,17 @@
 .form-style-2 label{
 	display: block;
 	margin: 0px 0px 15px 0px;
+  font-size: 1.3em;
+  font-weight: bold;
 }
+
 .form-style-2 label > span{
 	width: 100px;
 	font-weight: bold;
 	float: left;
 	padding-top: 8px;
 	padding-right: 5px;
+  text-shadow: 2px 2px #FFF;
 }
 .form-style-2 span.required{
 	color:red;
@@ -134,12 +141,20 @@ body {
   background-image: url("../images/we_succeed.jpg");
   background-size: cover;
   background-repeat: no-repeat;
+  	font-family: 'Lato', sans-serif;
   /* background-position: auto center; */
+}
+
+#login-form {
+  padding: 2px;
+  text-align: center;
+  zoom: 2.2;
 }
 
 #login-container{
   background-color: #fff;
   align-items: center;
+  opacity: .9;
 }
 
 #content-body {
@@ -149,11 +164,10 @@ body {
   align-content: center;
 }
 
-
 .center {
   margin: auto;
-  width: 20%;
-  border: 2px solid black;
+  width: 24%;
+  border: 2px solid grey;
   padding: 10px;
   margin-top: 10em;
 }
@@ -201,10 +215,24 @@ body {
 
 .sidenav #display-email{
   padding:  6px 6px 6px 32px;
+  color: #f1f1f1;
+  transform: translateY(40%);
 }
 .sidenav #display-email :hover {
-  color: #f1f1f1;
+  textcolor: #f1f1f1;
 }
+
+
+.sidenav p {
+  padding: 25px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+
 
 .sidenav .my-activities {
   padding: 6px 6px 6px 32px;
@@ -270,6 +298,8 @@ body {
   transform: translateX(60%);
   display:flex;
   text-align: center;
+  background-color: white, 0.8;
+  
 }
 
 #myChart2{
@@ -277,16 +307,22 @@ body {
 }
 
 #myChart3 {
-  transform: translateX(50%);
+  transform: translateX(60%);
 }
 
 #success-message{
+  text-shadow: 2px 2px #FFF;
   display: none;
-  background-color: white;
+  background-image: url(https://i.gifer.com/YGg4.gif);
+  /* background-color: white; */
 }
 
 .recommendations{
   flex: 1;
   /* align-content: center; */
   transform: translateX(30%);
+}
+
+#email-label{
+  font-size: 1em;
 }
