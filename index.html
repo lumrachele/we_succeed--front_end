@@ -24,37 +24,51 @@
       </div>
     </div>
 
-    <div id="success-message">
+    <div id="success-message" class="form-style-2">
       <h1>Congratulations, you reached your goal! Go celebrate.</h1>
       <br>
-      <h2>Create a New Goal!</h2>
+      <div class="form-style-2-heading">Create a New Goal!</div>
       <br>
       <form class="" action="index.html" method="post" id="goal-form">
-        <label for="goal-name"> Goal Name</label>
+        <label for="goal-name" class="input-field"> Goal Name</label>
         <input id="input-goal-name"type="text" name="input-goal" value=""><br>
+        <br><br>
         <input id="input-user-id"type="hidden" name="input-user" value=""><br>
-        <label for="goal-points">Point Value</label>
-        <input id="input-point-value"type="number" name="input-goal-value" value=""><br>
+        <label for="goal-points" class="input-field">Point Value</label>
+        <input id="input-point-value"type="number" name="input-goal-value" value="">
+        <br><br>
         <input type="submit" value="Create Goal">
+        <br>
       </form>
     </div>
+    <!-- Trigger/Open The Modal -->
+    <button id="myBtn">New Activity</button>
 
-    <div id="hidden-new-activity-form">
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+
+
+    <div id="hidden-new-activity-form" class="form-style-2">
+      <div class="form-style-2-heading">Log an Activity</div>
       <form class="create-activity-form" action="index.html" method="post">
-        <label for="activity_id">Category</label>
-        <select class="" data-input-id="category-select" name="">
+        <label for="activity_id" class="input-field">Category</label>
+        <select class="select-field" data-input-id="category-select" name="">
           <option selected="selected"  disabled="disabled">Choose a Category</option>
           <option value="1">Workout</option>
           <option value="2">Meal</option>
           <option value="3">Mindfulness</option>
         </select>
-        <br>
+        <br><br>
         <input data-input-id="goal" type="hidden" name="goal_id" value="">
-        <label for="note">Activity Title</label>
+        <label for="note" class="input-field">Activity Title</label>
         <input style="width:250px;" data-input-id="note" type="text" name="note" value="" placeholder="e.g. 'Squatz', 'Meditatez', 'Ate a Salad'">
-        <br>
-        <label for="points">Points Value</label>
-        <select data-input-id="points" class="" id="points" name="">
+        <br><br>
+        <label for="points" class="input-field">Points Value</label>
+        <select data-input-id="points" class="select-field" id="points" name="">
           <option selected="selected" disabled="disabled">-</option>
           <option value="1">1</option>
           <option value="2">2</option>
@@ -66,15 +80,24 @@
           <option value="8">8</option>
           <option value="9">9</option>
         </select>
-        <br>
-        <p>Point Recommendations:</p>
-        <p>Easy Activity: 1-3 points</p>
-        <p>Medium Activity: 4-6 points</p>
-        <p>Hard Activity: 7-9 points</p>
-        <br>
+        <br><br>
         <input type="submit" name="create-activity" value="Log Activity">
+        <br>
       </form>
     </div>
+    <div id="recommendations">
+      <br><br><br>
+      <p><strong>Point Recommendations:</strong></p>
+      <p>Easy Activity: 1-3 points</p>
+      <p>Medium Activity: 4-6 points</p>
+      <p>Hard Activity: 7-9 points</p>
+    </div>
+  </div>
+  <!-- end of modal content -->
+
+</div>
+<!-- end of modal -->
+
       <div class="" id="content-body">
       </div>
       <div class="" id="home-page-body">

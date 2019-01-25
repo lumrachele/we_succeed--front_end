@@ -13,26 +13,37 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const errorContainer = document.querySelector("#error-container")
   const successMessage = document.querySelector("#success-message")
 
+
+  // Get the modal
+const modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+const openModalBtn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+const span = document.getElementsByClassName("close")[0];
+
+
   const body = document.querySelector("body")
   const navBarButton = document.querySelector("#open-nav-bar")
   const navBar = document.querySelector(".sidenav")
   const splashPage = document.querySelector(".splash-page")
   const contentBody = document.querySelector("#content-body")
+
   const createActivityForm = document.querySelector("#hidden-new-activity-form")
   const goalForm = document.querySelector("#goal-form")
   const inputGoalName = document.querySelector("#input-goal-name")
-  // const inputUserId = document.querySelector("#input-user-id")
   const inputPointValue = document.querySelector("#input-point-value")
+  const inputCategory = document.querySelector("[data-input-id='category-select']")
+  const inputGoal = document.querySelector("[data-input-id='goal']")
+  const inputNote = document.querySelector("[data-input-id='note']")
+  const inputPoints = document.querySelector("[data-input-id='points']")
 
 
   const pointField = document.querySelector("#points")
   const myChart = document.getElementById("myChart")
   const myChart2 = document.getElementById("myChart2")
 
-  const inputCategory = document.querySelector("[data-input-id='category-select']")
-  const inputGoal = document.querySelector("[data-input-id='goal']")
-  const inputNote = document.querySelector("[data-input-id='note']")
-  const inputPoints = document.querySelector("[data-input-id='points']")
 
 
 //**************** EVENT LISTENERS **********************//
@@ -41,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   loginForm.addEventListener("submit", function(event) {
     event.preventDefault()
+    openModalBtn.style.display = "none"
     //Grabs the email
     const displayEmail = document.querySelector("#display-email")
     userEmail = loginEmail.value
@@ -58,6 +70,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         userEmail = foundUser.email
         renderUserHomePage(foundUser)
         currentGoal = unreachedGoal(foundUser)
+        if (!currentGoal){
+          openModalBtn.style.display = "none"
+          modal.style.display = "none"
+        }
         console.log(currentGoal);
       } else{
         errorContainer.innerHTML="You do not have an account."
@@ -82,16 +98,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
     //Hides Nav Bar
     if(e.target == document.querySelector(".closebtn")){
       navBar.style.width = "0"
+      openModalBtn.style.display = "none"
     }
     //profile / home page
-    if (e.target.id === "display-email"){//user show page
+    if (e.target.id === "display-email"){
+      openModalBtn.style.display = "none"
+      //user show page
       if (unreachedGoal(currentUser) == undefined) {
         successMessage.style.display = "block"
+        openModalBtn.style.display = "none"
       }
       myChart2.style.display = "none"
       navBar.style.width = "0"
       contentBody.innerHTML = ""
-      createActivityForm.style.display = "none"
+      // createActivityForm.style.display = "none"
       contentBody.innerHTML += `<div id="activity-chart" style="width:50%"><canvas id="myChart3"></canvas></div>`
       fetch(URL)
       .then(r => r.json())
@@ -101,14 +121,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     //Activity Page
     if (e.target.innerText === 'My Activities') {
+
       myChart2.style.display = "none"
-      createActivityForm.style.display = "block"
+      // createActivityForm.style.display = "block"
       // contentBody.innerHTML = ""
       if (!currentGoal.reached){
-        createActivityForm.style.display = "block";
+        // createActivityForm.style.display = "block";
+        openModalBtn.style.display = "block"
       }
       else {
-        createActivityForm.style.display = "none";
+        // createActivityForm.style.display = "none";
+        openModalBtn.style.display = "none"
       }
       // console.log(pointFieldDropDown());
       // pointField.options = mapPointOption(pointOptions)
@@ -116,15 +139,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
       fetch(URL)
       .then(r => r.json())
       .then(userJson => findUser(userEmail, userJson))
-      .then((user) => renderMyActivities(user))
+      .then((user) => {
+        renderMyActivities(user)
+        currentGoal = unreachedGoal(user)
+        currentGoal ? openModalBtn.style.display = "block" : openModalBtn.style.display = "none"
+      })
       .then((user)=>{colorCard()})
     }//end of activity
 
     //Goals Event Listener
     if (e.target.innerText === 'My Goals') {
+      openModalBtn.style.display = "none"
       myChart2.style.display = "block"
       // myChart.style.display = "none"
-      createActivityForm.style.display = "none"
+      // createActivityForm.style.display = "none"
       contentBody.innerHTML = ""
       navBar.style.width = "0"
       fetch(URL)
@@ -136,12 +164,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   })//end of navBar event Listener
 
+  //expand create activity form
+  openModalBtn.addEventListener('click', (e)=>{
+    modal.style.display = "block";
+  })
+
+  // When the user clicks on <span> (x), close the modal
+  span.addEventListener('click', ()=> {
+    modal.style.display = "none";
+  })
+
+
+
 // create activity form event listener
   createActivityForm.addEventListener('submit', (e)=>{
     e.preventDefault()
 
-    //creating a new user_activity
-    //input goal value should be the goal that has goal.reached=false
     const createUserId = currentUser.id
     const createActivityId = inputCategory.value
     const createCategory = inputCategory.value
@@ -179,7 +217,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
         colorCard()
         currentUser = updatedUser
         if (goalReached(updatedUser)) {
-          createActivityForm.style.display = "none"
+          // createActivityForm.style.display = "none"
+          modal.style.display = "none";
+          openModalBtn.style.display = "none"
           successMessage.style.display = "block"
           // successMessage.innerHTML += `goalname`
 
@@ -199,12 +239,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }//end of if statement if goal reached
       })//end of 2nd then
     })//end of created ua then
+      modal.style.display = "none";
 
   })//end of create User activity form
 
   goalForm.addEventListener('submit', (e)=>{
     e.preventDefault()
-
+    openModalBtn.style.display = "none"
     const submittedGoalName = inputGoalName.value
     const submittedUserId = currentUser.id
     const submittedPointValue = inputPointValue.value
@@ -228,7 +269,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       currentGoal = unreachedGoal(currentUser)
       successMessage.style.display = "none"
-      createActivityForm.style.display = "block"
+      // createActivityForm.style.display = "block"
+      // openModalBtn.style.display = "block"
 
     })
 
@@ -392,22 +434,31 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const goalPercentages = goalValues.map(function(value, i) {
       return (goalActpoints[i] / value) * 100
     })
-
+    let chartColors = []
+    goalsList.forEach(goal => {
+      chartColors.push('rgba(255,99,132,1)')
+    })
     return new Chart(myChart2, {
       type: 'bar',
         data: {
           labels: goalNameArray,
           datasets: [{
-              label: 'total points',
+              label: 'Goal History',
               data: goalValues,
-              backgroundColor: ['rgba(255, 99, 132)','rgba(54, 162, 235)','rgba(255, 206, 86)','rgba(75, 192, 192)','rgba(153, 102, 255)','rgba(255, 159, 64)'],
+              backgroundColor: ['rgba(255, 99, 132)','rgba(54, 162, 235)','rgba(255, 206, 86)','rgba(75, 192, 192)','rgba(153, 102, 255)','rgba(255, 159, 64)','rgba(255, 99, 132)','rgba(54, 162, 235)','rgba(255, 206, 86)','rgba(75, 192, 192)','rgba(153, 102, 255)','rgba(255, 159, 64)','rgba(255, 99, 132)','rgba(54, 162, 235)','rgba(255, 206, 86)','rgba(75, 192, 192)','rgba(153, 102, 255)','rgba(255, 159, 64)'],
               borderColor: [
               'rgba(255,99,132,1)',
               'rgba(54, 162, 235, 1)',
               'rgba(255, 206, 86, 1)',
               'rgba(75, 192, 192, 1)',
               'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'],
+              'rgba(255, 159, 64, 1)',
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)','rgba(255, 99, 132)','rgba(54, 162, 235)','rgba(255, 206, 86)','rgba(75, 192, 192)','rgba(153, 102, 255)','rgba(255, 159, 64)'],
               borderWidth: 1
           }]// end of datasets
         },//end of data
